@@ -29,7 +29,7 @@ struct CircleButton: View {
                 .padding()
                 .background(backgroundColor)
                 .clipShape(isZero ? AnyShape(RoundedRectangle(cornerRadius: 70)) : AnyShape(Circle()))
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 6))
+                .padding(.trailing, 6)
         }
     }
 }
