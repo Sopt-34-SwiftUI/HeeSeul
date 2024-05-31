@@ -11,6 +11,12 @@ struct ContentView: View {
     
     private let background = Color.black
     
+    @State private var text: String = ""
+    
+    @State private var result: Int = 0
+    
+    @State private var digit: Int = 0
+    
     private let buttonData: [[ButtonType]] = [
         [.ac, .divider, .remainder, .square],
         [.seven, .eight, .nine, .multiply],
@@ -29,13 +35,13 @@ struct ContentView: View {
                 
                 HStack {
                     Spacer()
-                    Text("")
+                    Text(text)
                         .font(.largeTitle)
                         .bold()
                         .foregroundColor(.white)
-                        .background(.blue)
+                        .background(.black)
                         .padding()
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
+                        .padding(.trailing, 10)
                 }
                 
                 ForEach(buttonData, id: \.self) { row in
@@ -45,16 +51,37 @@ struct ContentView: View {
                                          backgroundColor: item.bgColor,
                                          textColor: item.textColor,
                                          isZero: item == .zero ? true : false) {
-                                print(item.title)
+                               calculate(type: item)
                             }
                         }
                     }
-                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 6, trailing: 0))
+                    .padding(.bottom, 6)
                 }
             }
-            .padding(EdgeInsets(top: 0, leading: 0, bottom: 80, trailing: 0))
+            .padding(.bottom, 80)
         }
         .ignoresSafeArea()
+    }
+    
+    func calculate(type: ButtonType) {
+        switch type {
+        case .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .zero:
+            if digit != 0 {
+                if let prev = Int(self.text),
+                   let next = Int(type.title) {
+                    result = prev * 10 + next
+                    self.text = String(result)
+                }
+            } else {
+                digit += 1
+                self.text = type.title
+            }
+        case .ac:
+            digit = 0
+            self.text = "0"
+        default:
+            print(type.title)
+        }
     }
     
 }
